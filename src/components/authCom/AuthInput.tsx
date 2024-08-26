@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import { IAuth } from '../../types/types'
 const AuthInput: React.FC<IAuth> = ({
     title,
@@ -10,15 +11,16 @@ const AuthInput: React.FC<IAuth> = ({
     value,
     onChange,
 }) => {
+    const [showPassword, setShowPassword] = useState('password')
     return (
         <>
             <h2 className='text-xl mb-3'>{title}</h2>
-            <div className='flex flex-col gap-2 mb-4'>
+            <div className='flex flex-col gap-2 mb-4 relative'>
                 <label htmlFor='email' className='font-semibold text-[1rem]'>
                     {label}
                 </label>
                 <input
-                    type={type}
+                    type={type === 'password' ? showPassword : type}
                     placeholder={placeholder}
                     name={name}
                     id={id}
@@ -27,6 +29,17 @@ const AuthInput: React.FC<IAuth> = ({
                     onChange={onChange}
                     required
                 />
+                {type === 'password' && (
+                    <div className='cursor-pointer absolute right-3 top-[3.05rem]'>
+                        {showPassword === 'text' ? (
+                            <EyeOff
+                                onClick={() => setShowPassword('password')}
+                            />
+                        ) : (
+                            <Eye onClick={() => setShowPassword('text')} />
+                        )}
+                    </div>
+                )}
             </div>
         </>
     )

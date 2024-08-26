@@ -1,0 +1,6 @@
+.markdown h2 {
+    @apply text-[1.1rem] md:text-[1.6rem] mt-2;
+}
+.markdown ul li {
+    @apply list-disc;
+}

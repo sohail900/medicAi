@@ -13,6 +13,8 @@ const SignupCom: React.FC = () => {
         confirmPassword: '',
     })
     const [loading, setLoading] = useState(false)
+    const [showError, setShowError] = useState<string | null>(null)
+    const [passwordTouched, setPasswordTouched] = useState(false)
     //navigate to next page
     const navigate = useNavigate()
     //handle input change
@@ -22,6 +24,10 @@ const SignupCom: React.FC = () => {
             ...prevData,
             [name]: value,
         }))
+        // If the confirmPassword field is being changed, mark it as touched
+        if (name === 'confirmPassword') {
+            setPasswordTouched(true)
+        }
     }
     ///  handle onSumbit form
     const submitHandler = async (e: React.FormEvent) => {
@@ -31,9 +37,26 @@ const SignupCom: React.FC = () => {
         try {
             // create user with email and password...
             await createUserWithEmailAndPassword(auth, email, password)
-            navigate('../ai')
+            navigate('../ai', { state: { showToaster: true } })
         } catch (error) {
-            console.log(error)
+            // Check if error is of type FirebaseError
+            if (error instanceof Error) {
+                // Handle different types of errors
+                if (error.message.includes('auth/email-already-in-use')) {
+                    setShowError('This email is already in use.')
+                } else if (error.message.includes('auth/invalid-email')) {
+                    setShowError('The email address is not valid.')
+                } else if (error.message.includes('auth/weak-password')) {
+                    setShowError('The password is too weak.')
+                } else {
+                    setShowError(
+                        'An unexpected error occurred. Please try again.'
+                    )
+                }
+            } else {
+                console.error('Unknown error:', error)
+                setShowError('An unexpected error occurred. Please try again.')
+            }
         } finally {
             setLoading(false)
         }
@@ -67,11 +90,6 @@ const SignupCom: React.FC = () => {
                     onChange={handleInputChange}
                     value={inputData.password}
                 />
-                {inputData.password !== inputData.confirmPassword && (
-                    <p className='text-red-500 text-sm my-1 '>
-                        Password not matched
-                    </p>
-                )}
                 <AuthInput
                     id='confirmPassword'
                     label='Confirm Password'
@@ -81,6 +99,18 @@ const SignupCom: React.FC = () => {
                     onChange={handleInputChange}
                     value={inputData.confirmPassword}
                 />
+                {passwordTouched &&
+                    inputData.confirmPassword !== inputData.password && (
+                        <p className='text-red-500 text-sm my-2 text-semibold'>
+                            Password not matched
+                        </p>
+                    )}
+                {/* show error */}
+                {showError && (
+                    <p className='text-red-600 text-sm my-2 text-semibold'>
+                        {showError}
+                    </p>
+                )}
                 <button
                     className='w-full px-4 py-3 text-center text-white bg-primary-color rounded-md transition-all grid place-items-center ease-linear hover:opacity-70 disabled:bg-gray-400'
                     type='submit'
@@ -90,7 +120,7 @@ const SignupCom: React.FC = () => {
                         <Loader size={25} className='animate-spin text-white' />
                     ) : (
                         'Sign Up'
-                    )}                  
+                    )}
                 </button>
                 {/* <p className='text-sm text-tertiary-color my-2 font-semibold text-center'>
                     Or

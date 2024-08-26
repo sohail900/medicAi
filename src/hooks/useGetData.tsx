@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useCustomContext } from '../context/customContext'
-import { getData } from '../service/chatService'
+import { fetchUserSubscription, getData } from '../service/chatService'
 import { auth } from '../config/firebaseConfig'
+import { DocumentData } from 'firebase/firestore'
 const useGetData = () => {
     const [chatHistory, setChatHistory] = useState<any[] | null>(null)
     const [loading, setLoading] = useState(false)
     const [selectedChat, setSelectedChat] = useState<string | null>(null)
+    const [subscribed, setSubscribed] = useState<DocumentData | null>(null)
     const { handlePrevResponse } = useCustomContext()
     // use effect to fetched all data
     const fetchedData = async () => {
@@ -13,8 +15,12 @@ const useGetData = () => {
         const user_id = auth.currentUser?.uid
         const data = await getData(user_id as string)
         localStorage.removeItem('chatTitle')
+        const subscribeData = await fetchUserSubscription()
         if (data) {
             setChatHistory(data)
+        }
+        if (subscribeData) {
+            setSubscribed(subscribeData)
         }
         setLoading(false)
     }
@@ -25,7 +31,6 @@ const useGetData = () => {
     useEffect(() => {
         chatHistory?.filter((elem: any) => {
             if (elem.currentTitle === localStorage.getItem('chatTitle')) {
-                console.log(elem)
                 handlePrevResponse(elem.respondDoc)
             }
         })
@@ -41,6 +46,7 @@ const useGetData = () => {
         setSelectedChat,
         fetchedData,
         selectedChat,
+        subscribed,
     }
 }
 

@@ -1,3 +1,6 @@
 .input_fields {
-    @apply border-b-[2px] px-3 py-4 w-full border-[rgba(0,0,0,0.2)] focus:outline-none focus:ring-0;
+    @apply border-b-[1.5px] px-3 py-4 w-full border-[rgba(0,0,0,0.2)] focus:outline-none focus:ring-0;
+}
+.input_fields:focus {
+    @apply border-[#10B981];
 }

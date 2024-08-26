@@ -1,12 +1,21 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AuthLayouts from '../../layouts/AuthLayouts'
 import Button from '../../components/Button'
 import { ArrowRight } from 'lucide-react'
 import SigninCom from '../../components/authCom/SigninCom'
+import Toaster from '../../components/Toaster'
 
 const Signin: React.FC = () => {
+    const [showToaster, setShowToaster] = useState(false)
     const navigate = useNavigate()
+    const location = useLocation()
+    useEffect(() => {
+        // Check if state passed from navigate contains showToaster
+        if (location?.state?.showToaster) {
+            setShowToaster(true)
+        }
+    }, [location?.state])
     return (
         <>
             <section className='w-full h-auto md:h-dvh flex justify-center flex-col md:flex-row'>
@@ -30,6 +39,14 @@ const Signin: React.FC = () => {
                     </AuthLayouts>
                 </div>
             </section>
+            {showToaster && (
+                <Toaster
+                    isVisible={showToaster}
+                    message='Please Login First'
+                    onClose={() => setShowToaster(false)}
+                    bg_color='bg-[#f55045]'
+                />
+            )}
         </>
     )
 }

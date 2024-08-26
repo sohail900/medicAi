@@ -28,13 +28,13 @@ const SigninCom: React.FC = () => {
         setLoading(true)
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            navigate('../ai')
+            navigate('../ai', { state: { showToaster: false } })
         } catch (error: unknown) {
-            if (
-                error instanceof Error &&
-                error.message.includes('auth/user-not-found')
-            ) {
-                setError('User not found.')
+            console.log(error)
+            if (error instanceof Error) {
+                if (error.message.includes('auth/invalid-credential')) {
+                    setError('Invalid Credential')
+                }
             } else {
                 setError('Failed to Login..')
             }
@@ -74,11 +74,10 @@ const SigninCom: React.FC = () => {
 
                 {error && <p className='my-1 text-red-500 text-sm'>{error}</p>}
                 <div className='w-full flex justify-between items-center mt-6 mb-6'>
-                    <p className='flex items-center font-semibold gap-2 text-sm '>
-                        <input type='checkbox' name='checkbox' />
-                        Remember me
-                    </p>
-                    <Link to='#' className='text-sm font-semibold text-red-600'>
+                    <Link
+                        to='/forgot-password'
+                        className='text-sm font-semibold text-red-600'
+                    >
                         Forgot Password?
                     </Link>
                 </div>

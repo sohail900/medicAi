@@ -50,6 +50,7 @@ const Footer: React.FC = () => {
                             placeholder='Email'
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
+                            required
                         />
                         <button
                             className='w-auto sm:w-[30%] px-5 rounded-lg py-3 border-[1px] border-[#10B981] text-primary-color font-semibold transition-all duration-200 hover:opacity-70'

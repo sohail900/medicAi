@@ -1,15 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { CircleCheck } from 'lucide-react'
+import { DocumentData } from 'firebase/firestore'
 import { auth } from '../../../config/firebaseConfig'
 import { useStripe } from '@stripe/react-stripe-js'
 import { IPricing } from '../../../types/types'
 import Button from '../../Button'
-import Toaster from '../../Toaster'
+import { fetchUserSubscription } from '../../../service/chatService'
 
 const PricingCard: React.FC<IPricing> = ({ id, title, price, features }) => {
     const [loading, setLoading] = useState(false)
-    const [toaster, setToaster] = useState(false)
+    const [purchased, setPurchased] = useState<DocumentData | null>(null)
+    const navigate = useNavigate()
     const stripe = useStripe()
+    // get user's subscriptions data
+    useEffect(() => {
+        const userSubscription = async () => {
+            const data = await fetchUserSubscription()
+            if (data) {
+                setPurchased(data)
+            }
+        }
+        userSubscription()
+    }, [])
     const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const currentUser = auth.currentUser
@@ -36,6 +49,13 @@ const PricingCard: React.FC<IPricing> = ({ id, title, price, features }) => {
                 // convert into json
                 const session = await response.json()
                 if (stripe) {
+                    // Redirect to Stripe checkout
+                    const { error } = await stripe.redirectToCheckout({
+                        sessionId: session.id,
+                    })
+                    if (error) {
+                        return console.error('Stripe checkout error:', error)
+                    }
                     window.location.href = session.url
                 } else {
                     console.error('Stripe has not been initialized')
@@ -46,7 +66,7 @@ const PricingCard: React.FC<IPricing> = ({ id, title, price, features }) => {
                 setLoading(false)
             }
         } else {
-            setToaster(true)
+            navigate('./signin', { state: { showToaster: true } })
         }
     }
     return (
@@ -84,18 +104,20 @@ const PricingCard: React.FC<IPricing> = ({ id, title, price, features }) => {
                     })}
                 </ul>
                 <Button
-                    className='w-full bg-transparent border-[1px] mt-8 border-[rgba(0,0,0,0.2)] rounded-full text-tertiary-color transition-all hover:bg-primary-color hover:text-white hover:border-transparent'
-                    type='sumbit'
+                    className={`w-full  border-[1px] mt-8 border-[rgba(0,0,0,0.2)] rounded-full text-tertiary-color transition-all hover:bg-primary-color hover:text-white hover:border-transparent ${
+                        purchased?.purchasedPlan === title
+                            ? 'bg-primary-color text-white'
+                            : 'bg-transparent'
+                    }`}
+                    type='submit'
                 >
-                    {loading ? 'Please Wait' : 'Subscribe Now'}
+                    {loading
+                        ? 'Please Wait'
+                        : purchased?.purchasedPlan === title
+                        ? 'Subscribed'
+                        : 'Subscribe Now'}
                 </Button>
             </form>
-            <Toaster
-                isVisible={toaster}
-                message='Please SignIn First'
-                onClose={() => setToaster(false)}
-                bg_color='bg-[#FF1A1A]'
-            />
         </>
     )
 }

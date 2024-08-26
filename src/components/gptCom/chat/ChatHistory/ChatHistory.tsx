@@ -7,8 +7,13 @@ import useGetData from '../../../../hooks/useGetData'
 const ChatHistory: React.FC<{
     setSideSec: Dispatch<SetStateAction<boolean>>
 }> = ({ setSideSec }) => {
-    const { chatHistory, handlePrevResponse, loading, setSelectedChat } =
-        useGetData()
+    const {
+        chatHistory,
+        handlePrevResponse,
+        loading,
+        setSelectedChat,
+        subscribed,
+    } = useGetData()
     const navigate = useNavigate()
 
     // on click handler
@@ -45,7 +50,7 @@ const ChatHistory: React.FC<{
                 >
                     <Plus size={20} /> New Chat
                 </button>
-                <div className='my-6 overflow-y-auto h-[55%]'>
+                <div className='mt-6 mb-5 overflow-y-auto h-[50%]'>
                     {loading ? (
                         <Loader
                             className='mx-auto text-primary-color animate-spin'
@@ -74,10 +79,10 @@ const ChatHistory: React.FC<{
                         })
                     )}
                 </div>
-                <div className='w-full overflow-hidden'>
+                <div className='z-30 w-full overflow-hidden'>
                     <hr className='w-full border-none h-[1.2px] bg-[rgba(0,0,0,0.2)] mb-4 dark:bg-[rgba(225,225,225,0.2)]' />
                     <div
-                        className='cursor-pointer w-full flex justify-center gap-1 '
+                        className='cursor-pointer w-full flex justify-center gap-2'
                         onClick={() => navigate('./settings/sb')}
                     >
                         <div className='w-12 h-12 grid place-items-center rounded-lg  bg-[rgba(16,185,129,0.1)] text-primary-color'>
@@ -85,10 +90,14 @@ const ChatHistory: React.FC<{
                         </div>
                         <div className='flex-1'>
                             <h3 className='text-[0.9rem] font-semibold text-black dark:text-white'>
-                                Upgrade plan
+                                {subscribed
+                                    ? subscribed.purchasedPlan
+                                    : 'Upgrade plan'}
                             </h3>
                             <p className='w-auto text-[0.9rem] text-tertiary-color line-clamp-2'>
-                                Unlock advanced capabilities with GPT-4
+                                {subscribed?.stripeCustomerId
+                                    ? 'Unlimited document uploads'
+                                    : 'Unlock advanced capabilities with GPT-4'}
                             </p>
                         </div>
                     </div>

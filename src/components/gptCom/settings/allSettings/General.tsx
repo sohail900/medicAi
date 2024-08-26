@@ -15,7 +15,6 @@ const General: React.FC = () => {
     const [themeColor, setThemeColor] = useState('White')
     const [loading, setLoading] = useState(false)
     const theme = ['White', 'Dark']
-    const language = ['Auto', 'Urdu', 'English']
     // Update the body class based on theme
     useEffect(() => {
         if (themeColor === 'Dark') {
@@ -41,7 +40,9 @@ const General: React.FC = () => {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000)
         }
     }
     return (
@@ -72,19 +73,6 @@ const General: React.FC = () => {
                                     >
                                         {elem}
                                     </option>
-                                </>
-                            )
-                        })}
-                    </select>
-                </div>
-                {/* LANGUAGE */}
-                <div className=' mt-7 flex w-full  sm:w-[80%] md:w-[60%]  mb-3 justify-between items-center border-b-[1px] border-[rgba(0,0,0,0.1)] pb-4 dark:border-[rgba(225,225,225,0.1)]'>
-                    <h3 className='text-xl font-medium'>Language</h3>
-                    <select className='text-lg bg-transparent'>
-                        {language.map((elem) => {
-                            return (
-                                <>
-                                    <option key={elem}>{elem}</option>
                                 </>
                             )
                         })}

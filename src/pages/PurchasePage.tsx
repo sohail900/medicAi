@@ -1,7 +1,48 @@
+import { useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { auth, db, doc, setDoc } from '../config/firebaseConfig'
 
 const PurchageDone = () => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchSessionData = async () => {
+            const currentUser = auth.currentUser
+
+            if (currentUser) {
+                const queryParams = new URLSearchParams(window.location.search)
+                const sessionId = queryParams.get('session_id')
+
+                if (sessionId) {
+                    // Fetch the session details from your server
+                    const response = await fetch(
+                        `${
+                            import.meta.env.VITE_BASE_URL
+                        }/checkout-session?sessionId=${sessionId}`
+                    )
+                    const session = await response.json()
+
+                    // Store payment details in Firebase
+                    const userRef = doc(db, 'users', currentUser.uid)
+                    await setDoc(userRef, {
+                        purchasedPlan: session.productName,
+                        amount: session.amount,
+                        paymentDate: new Date(),
+                        stripeCustomerId: session.customer,
+                        stripeSubscriptionId: session.subscription,
+                    })
+
+                    // Redirect to dashboard or wherever necessary
+                    navigate('.//ai')
+                }
+            } else {
+                navigate('./signin', { state: { showToaster: true } })
+            }
+        }
+
+        fetchSessionData()
+    }, [navigate])
     return (
         <>
             <div className='w-full h-dvh flex flex-col items-center justify-center'>

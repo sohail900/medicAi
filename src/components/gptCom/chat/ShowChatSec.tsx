@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import MarkdownJsx from 'markdown-to-jsx'
 import sidelogo from '/assets/sidelogo.png'
+import './style.css'
 const ShowChatSec: React.FC<{ role: string; message: string }> = ({
     role,
     message,
@@ -33,7 +34,7 @@ const ShowChatSec: React.FC<{ role: string; message: string }> = ({
                         className='object-cover mt-2'
                     />
                     <div className='w-fit text-left font-normal bg-gray-50 py-2 px-4 rounded-2xl break-words relative dark:bg-[rgba(0,0,0,0.5)] dark:text-white'>
-                        <p className=' leading-relaxed text-[1rem] tracking-wide'>
+                        <p className='markdown leading-relaxed text-[1rem] tracking-wide'>
                             <MarkdownJsx>{message}</MarkdownJsx>
                         </p>
                         <span ref={messageEndRef} />

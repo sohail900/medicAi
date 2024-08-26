@@ -1,10 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { Loader } from 'lucide-react'
-import { db } from '../../../config/firebaseConfig'
-import { addDoc, collection } from 'firebase/firestore'
 import Button from '../../Button'
 import './style.css'
-import Toaster from '../../Toaster'
 const InputField: React.FC = () => {
     const [inputValues, setInputValues] = useState({
         firstName: '',
@@ -27,24 +24,18 @@ const InputField: React.FC = () => {
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
-        try {
-            setInputValues({
-                firstName: '',
-                lastName: '',
-                email: '',
-                number: null,
-                message: '',
-            })
-            // store all data to firebase store.
-            await addDoc(collection(db, 'message'), {
-                ...inputValues,
-                timeStamp: new Date(),
-            })
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        const mailtoLink = `mailto:ashakoor101176@gmail.com?fullname=${encodeURIComponent(
+            inputValues.firstName + inputValues.lastName
+        )}&body=${encodeURIComponent(inputValues.message)}`
+        window.location.href = mailtoLink // Trigger mailto link
+        setLoading(false)
+        setInputValues({
+            firstName: '',
+            lastName: '',
+            email: '',
+            number: null,
+            message: '',
+        })
     }
     return (
         <>
@@ -83,16 +74,15 @@ const InputField: React.FC = () => {
                         type='number'
                         name='phone'
                         placeholder='Phone'
-                        maxLength={11}
                         className='input_fields'
                         onChange={onChangeHandler}
-                        value={inputValues.number! || ''}
+                        value={inputValues?.number! || null}
                         required
                     />
                 </div>
                 <textarea
                     name='message'
-                    className='w-full h-[100px] border-b-[2px] px-3 py-4 border-[rgba(0,0,0,0.2)] mb-5 focus:outline-none focus:ring-0'
+                    className='w-full h-[100px] border-b-[1.5px] px-3 py-4 border-[rgba(0,0,0,0.2)] mb-5 focus:outline-none focus:ring-0 focus:border-[#10B981]'
                     onChange={onChangeHandler}
                     placeholder='Message'
                     required
@@ -109,13 +99,6 @@ const InputField: React.FC = () => {
                     )}
                 </Button>
             </form>
-            {/* show toaster */}
-            <Toaster
-                message='Message sent successfully!'
-                isVisible={loading}
-                onClose={() => setLoading(false)}
-                bg_color='bg-primary-color'
-            />
         </>
     )
 }

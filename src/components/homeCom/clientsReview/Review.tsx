@@ -11,7 +11,7 @@ const settings: any = {
     slidesToShow: 2,
     slidesToScroll: 1,
     centerMode: true,
-    centerPadding: '90px',
+    centerPadding: '50px',
     nextArrow: <NextBtn />,
     prevArrow: null,
     responsive: [

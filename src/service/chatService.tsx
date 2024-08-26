@@ -5,6 +5,9 @@ import {
     orderBy,
     query,
     where,
+    doc,
+    auth,
+    getDoc,
 } from '../config/firebaseConfig'
 
 /*
@@ -55,5 +58,25 @@ export const getData = async (user_id: string) => {
         return data
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const fetchUserSubscription = async () => {
+    try {
+        const userId = auth.currentUser?.uid
+        if (userId) {
+            const userDoc = await getDoc(doc(db, 'users', userId))
+            if (userDoc.exists()) {
+                console.log(userDoc.data())
+                return userDoc.data()
+            } else {
+                console.log('No such document!')
+            }
+        } else {
+            console.log('User not authenticated')
+        }
+    } catch (error) {
+        console.error('Error fetching user subscription:', error)
+        return null
     }
 }

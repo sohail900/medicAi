@@ -15,11 +15,21 @@ const Signup = lazy(() => import('../pages/signup/Signup'))
 const DiscountsPage = lazy(() => import('../pages/DiscountsPage'))
 const NotFound = lazy(() => import('../pages/NotFound'))
 const PurchageDone = lazy(() => import('../pages/PurchasePage'))
+const ForgotPass = lazy(() => import('../pages/ForgotPass'))
+const ResetPassword = lazy(() => import('../pages/ResetPassword'))
 const PageRouter = () => {
     const routes = createBrowserRouter([
         {
             path: '/',
             element: <Home />,
+        },
+        {
+            path: '/forgot-password',
+            element: <ForgotPass />,
+        },
+        {
+            path: '/reset-password',
+            element: <ResetPassword />,
         },
         {
             path: '/dic',
