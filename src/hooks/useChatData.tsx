@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useCustomContext } from '../context/customContext'
-import { saveChatData } from '../service/chatService'
 import {
     addDoc,
     doc,
@@ -106,5 +105,5 @@ export const useChatData = ({
             setLoading(false)
         }
     }
-    return { loading, handleSubmit, setMessage, message }
+    return { loading, handleSubmit, setMessage, message, file, setFile }
 }

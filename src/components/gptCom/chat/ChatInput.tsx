@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Paperclip, SendHorizontal, FileText, Loader } from 'lucide-react'
 import { useCustomContext } from '../../../context/customContext'
 import { useChatData } from '../../../hooks/useChatData'
 const ChatInput = () => {
-    const [file, setFile] = useState<File | null>(null)
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     /// used custom hooks
@@ -20,15 +19,16 @@ const ChatInput = () => {
             fileInputRef.current.click()
         }
     }
+    const { handleSubmit, loading, message, setMessage, file, setFile } =
+        useChatData({
+            fileInputRef,
+            textareaRef: textareaRef as React.RefObject<HTMLInputElement>,
+        })
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFile(e.target.files[0])
         }
     }
-    const { handleSubmit, loading, message, setMessage } = useChatData({
-        fileInputRef,
-        textareaRef: textareaRef as React.RefObject<HTMLInputElement>,
-    })
     return (
         <form
             className='w-full flex items-center bg-white drop-shadow-drop rounded-2xl relative dark:bg-black'

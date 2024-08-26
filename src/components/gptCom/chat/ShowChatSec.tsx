@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import MarkdownJsx from 'markdown-to-jsx'
 import sidelogo from '/assets/sidelogo.png'
 const ShowChatSec: React.FC<{ role: string; message: string }> = ({
     role,
@@ -33,7 +34,7 @@ const ShowChatSec: React.FC<{ role: string; message: string }> = ({
                     />
                     <div className='w-fit text-left font-normal bg-gray-50 py-2 px-4 rounded-2xl break-words relative dark:bg-[rgba(0,0,0,0.5)] dark:text-white'>
                         <p className=' leading-relaxed text-[1rem] tracking-wide'>
-                            {message}
+                            <MarkdownJsx>{message}</MarkdownJsx>
                         </p>
                         <span ref={messageEndRef} />
                     </div>
@@ -42,5 +43,4 @@ const ShowChatSec: React.FC<{ role: string; message: string }> = ({
         </>
     )
 }
-
 export default ShowChatSec
