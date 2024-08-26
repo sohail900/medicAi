@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smoothing: antialiased;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+}
+h1 {
+    @apply text-[2.7rem] xl:text-hero-title font-bold;
+}
+h2 {
+    @apply text-title-text font-semibold;
+}
+.text_label {
+    @apply relative ml-8 font-medium;
+}
+.text_label::before {
+    @apply content-[''] w-[22px] h-[2px] absolute bg-primary-color rounded-lg top-1/2 -translate-y-1/2 -left-7;
+}
+.btn_bg {
+    @apply bg-primary-color text-white transition-all duration-200 ease-in-out  border-[1.2px] border-transparent hover:bg-transparent hover:text-primary-color hover:border-[1.2px] hover:border-[#10B981];
+}
+.mask {
+    -webkit-mask-image: linear-gradient(to right, #000, transparent);
+    mask-image: linear-gradient(to right, #000, transparent);
+}
+/* LOADING STYLE */
+.loader {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    background-color: #fff;
+    display: grid;
+    place-items: center;
+}
+.circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    opacity: 0;
+    position: absolute;
+    transform: rotate(225deg);
+    animation-iteration-count: infinite;
+    animation-name: orbit;
+    animation-duration: 5.5s;
+}
+.circle:after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #10b981; /* Pick a color */
+}
+
+.circle:nth-child(2) {
+    animation-delay: 240ms;
+}
+.circle:nth-child(3) {
+    animation-delay: 480ms;
+}
+.circle:nth-child(4) {
+    animation-delay: 720ms;
+}
+.circle:nth-child(5) {
+    animation-delay: 960ms;
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(225deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+
+    7% {
+        transform: rotate(345deg);
+        animation-timing-function: linear;
+    }
+
+    30% {
+        transform: rotate(455deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    39% {
+        transform: rotate(690deg);
+        animation-timing-function: linear;
+    }
+
+    70% {
+        transform: rotate(815deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+
+    75% {
+        transform: rotate(945deg);
+        animation-timing-function: ease-out;
+    }
+
+    76% {
+        transform: rotate(945deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(945deg);
+        opacity: 0;
+    }
+}

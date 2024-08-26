@@ -1,0 +1,3 @@
+section > div > .active {
+    @apply bg-primary-color text-white;
+}

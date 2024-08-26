@@ -1,0 +1,36 @@
+{
+    "dmData": [
+        {
+            "id": 1,
+            "title": "Game-Changer in Patient Care",
+            "desc": "This AI tool is a game-changer. It’s fast, accurate, and lets me focus more on patient care",
+            "clientName": "Dr. Sarah Thompson",
+            "label": "Family Medicine",
+            "profileImg": "/assets/client_img/client1.jpg"
+        },
+        {
+            "id": 2,
+            "title": "Precision and Time-Saving",
+            "desc": "The AI-generated SOAP notes are precise and save me so much time. Integration was seamless.",
+            "clientName": "Dr. Michael Reyes",
+            "label": "Gastroenterologist",
+            "profileImg": "/assets/client_img/client2.jpg"
+        },
+        {
+            "id": 3,
+            "title": "Game-Changer in Patient Care",
+            "desc": "This AI tool is a game-changer. It’s fast, accurate, and lets me focus more on patient care",
+            "clientName": "Dr. Sarah Thompson",
+            "label": "Family Medicine",
+            "profileImg": "/assets/client_img/client1.jpg"
+        },
+        {
+            "id": 4,
+            "title": "Precision and Time-Saving",
+            "desc": "The AI-generated SOAP notes are precise and save me so much time. Integration was seamless.",
+            "clientName": "Dr. Michael Reyes",
+            "label": "Gastroenterologist",
+            "profileImg": "/assets/client_img/client2.jpg"
+        }
+    ]
+}

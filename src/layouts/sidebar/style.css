@@ -1,0 +1,9 @@
+.nav_link {
+    @apply w-10 h-10 rounded-xl grid place-items-center transition-all duration-200 ease-in-out text-neutral-color;
+}
+.active {
+    @apply bg-primary-color text-white;
+}
+.nav_link:hover {
+    @apply bg-primary-color text-white;
+}
