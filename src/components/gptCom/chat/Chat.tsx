@@ -16,9 +16,7 @@ const Chat: React.FC = () => {
                 </button>
                 <div
                     className={`z-30 w-auto  lg:w-[25%] h-full bg-white shadow-secondary-shadow absolute transition-all duration-300 ease-in-out ${
-                        sideSec
-                            ? 'left-0 opacity-100'
-                            : '-left-[500px] opacity-0'
+                        sideSec ? 'left-0' : '-left-[500px] '
                     } lg:left-0 lg:relative dark:bg-black`}
                 >
                     <ChatHistory setSideSec={setSideSec} />
