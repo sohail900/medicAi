@@ -1,6 +1,12 @@
 .markdown h2 {
     @apply text-[1.1rem] md:text-[1.6rem] mt-2;
 }
+.markdown ul{
+    @apply px-5;
+}
 .markdown ul li {
-    @apply list-disc;
+    @apply list-disc ;
+}
+.markdown hr{
+    @apply h-[1.8px] w-full rounded-full mt-3 mb-2 border-none outline-none bg-[rgba(0,0,0,0.1)] ;
 }

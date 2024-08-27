@@ -29,7 +29,7 @@ export const useChatData = ({
         if (textarea) {
             textarea.style.height = 'auto' // Reset height
             textarea.style.height = `${textarea.scrollHeight}px` // Set height to scrollHeight
-            // TODO: Ensure the textarea grows upwards by translating it upwards by the increased height
+            // TODO: Textarea height grow logic
             textarea.style.transform = `translateY(-${
                 textarea.scrollHeight - textarea.clientHeight
             }px)`
@@ -71,7 +71,6 @@ export const useChatData = ({
             if (fileInputRef.current) {
                 fileInputRef.current.value = ''
             }
-            console.log(ai_response)
             if (respond.status == 200) {
                 handleNewResponse(respond.data)
                 const chatCollection = collection(db, 'chat')
@@ -91,10 +90,7 @@ export const useChatData = ({
                 } else {
                     const chatDoc = snapShot.docs[0]
                     const existingData = chatDoc.data()
-                    const updatedDoc = [
-                        ...existingData.respondDoc,
-                        ...ai_response,
-                    ]
+                    const updatedDoc = [...existingData.respondDoc,...ai_response]
                     const docRef = doc(db, 'chat', chatDoc.id)
                     await updateDoc(docRef, { respondDoc: updatedDoc })
                 }

@@ -15,7 +15,7 @@ import {
   # only login user can see their data
 */
 
-// export const saveChatData = async (respondDoc: any, currentTitle: string) => {
+// export const saveChatData = async (ai_response: any, currentTitle: string,user_id:string) => {
 //     try {
 // 	console.log('the responsd doc is ', respondDoc)
 // 	console.log('the current title is ', currentTitle)
@@ -31,13 +31,13 @@ import {
 //             await addDoc(chatCollection, {
 //                 user_id: user_id,
 //                 currentTitle,
-//                 respondDoc,
+//                 respondDoc:ai_response,
 //                 timeStamp: new Date(),
 //             })
 //         } else {
 //             const chatDoc = snapShot.docs[0]
 //             const existingData = chatDoc.data()
-//             const updatedDoc = [...existingData.respondDoc, ...respondDoc]
+//             const updatedDoc = [...existingData.respondDoc, ...ai_response]
 //             const docRef = doc(db, 'chat', chatDoc.id)
 //             await updateDoc(docRef, { respondDoc: updatedDoc })
 //         }
