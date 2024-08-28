@@ -61,7 +61,7 @@ const Navbar: FC = () => {
                         <Link to='./ai'>
                             <CircleUserRound
                                 size={30}
-                                className='mt-2 cursor-pointer'
+                                className='mt-1 cursor-pointer'
                                 strokeWidth={1.4}
                             />
                         </Link>

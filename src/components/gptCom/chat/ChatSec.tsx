@@ -4,7 +4,7 @@ import sidelogo from '/assets/sidelogo.png'
 import ShowChatSec from './ShowChatSec'
 import { useCustomContext } from '../../../context/customContext'
 const ChatSec: React.FC = () => {
-    const { uploadFile, respond } = useCustomContext()
+    const { fileRef, respond } = useCustomContext()
     return (
         <>
             {/* Scrollable chat container */}
@@ -12,13 +12,15 @@ const ChatSec: React.FC = () => {
                 {/* Logo and title */}
                 <div className='flex flex-col items-center mb-8'>
                     <img src={sidelogo} alt='sidelogo' width={60} />
-                    <h2 className='text-2xl font-semibold mt-2 text-black dark:text-white'>AI Medics</h2>
+                    <h2 className='text-2xl font-semibold mt-2 text-black dark:text-white'>
+                        AI Medics
+                    </h2>
                     <p className='text-sm text-neutral-color'>
                         By doctor Octavius
                     </p>
                     <button
                         className='w-[120px] py-4 px-2 rounded-lg border-[1px] border-dashed border-[rgba(0,0,0,0.2] mt-3 text-sm text-tertiary-color flex flex-col items-center gap-2'
-                        onClick={() => uploadFile?.current?.click()}
+                        onClick={() => fileRef?.current?.click()}
                     >
                         Upload File <Upload size={19} />
                     </button>

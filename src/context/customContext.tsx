@@ -1,16 +1,7 @@
 import React, { createContext, useState, useContext } from 'react'
-
-// Define the context type
-interface CustomContextType {
-    uploadFile: React.RefObject<HTMLInputElement> | null
-    uploadMedicFile: (element: React.RefObject<HTMLInputElement>) => void
-    respond: any[]
-    handleNewResponse: (newResponse: any) => {}
-    handlePrevResponse: (newResponse: any) => {}
-}
-
+import { ICustomContextType } from '../types/types'
 // Create the context with default value
-const CustomContext = createContext<CustomContextType>(null!)
+const CustomContext = createContext<ICustomContextType>(null!)
 
 // Create a provider component
 export const ContextProvider = ({
@@ -19,24 +10,23 @@ export const ContextProvider = ({
     children: React.ReactNode
 }) => {
     const [respond, setRespond] = useState<any[]>([])
-    const [uploadFile, setUploadFile] =
+    const [fileRef, setfileRef] =
         useState<React.RefObject<HTMLInputElement> | null>(null)
     // Add functions to update state
     const uploadMedicFile = (element: React.RefObject<HTMLInputElement>) =>
-        setUploadFile(element)
+        setfileRef(element)
     const handleNewResponse = (newResponse: any) => {
         setRespond((prevRespond) => [...prevRespond, ...newResponse.respondDoc])
         return {}
     }
     const handlePrevResponse = (newResponse: any) => {
-        console.log(newResponse)
         setRespond([...newResponse])
         return {}
     }
     return (
         <CustomContext.Provider
             value={{
-                uploadFile,
+                fileRef,
                 uploadMedicFile,
                 respond,
                 handleNewResponse,
@@ -49,6 +39,4 @@ export const ContextProvider = ({
 }
 
 // Create a custom hook to use the context
-export const useCustomContext = () => {
-    return useContext(CustomContext)
-}
+export const useCustomContext = () => useContext(CustomContext)

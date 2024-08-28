@@ -10,14 +10,16 @@ import Footer from '../../layouts/footer/Footer'
 const Home = () => {
     return (
         <>
-            <Navbar />
-            <Hero />
-            <PortfolioCom />
-            <CardCom />
-            <Review />
-            <Pricing />
-            <Contact />
-            <Footer />
+            <div className='max-w-[1366px] mx-auto'>
+                <Navbar />
+                <Hero />
+                <PortfolioCom />
+                <CardCom />
+                <Review />
+                <Pricing />
+                <Contact />
+                <Footer />
+            </div>
         </>
     )
 }

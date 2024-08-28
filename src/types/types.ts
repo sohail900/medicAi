@@ -63,3 +63,16 @@ export interface IToaster {
     onClose: () => void
     bg_color: string
 }
+/// ref types
+export type TRef = {
+    textareaRef: React.RefObject<HTMLInputElement>
+    fileInputRef: React.RefObject<HTMLInputElement>
+}
+// custom context
+export interface ICustomContextType {
+    fileRef: React.RefObject<HTMLInputElement> | null
+    uploadMedicFile: (element: React.RefObject<HTMLInputElement>) => void
+    respond: any[]
+    handleNewResponse: (newResponse: any) => {}
+    handlePrevResponse: (newResponse: any) => {}
+}

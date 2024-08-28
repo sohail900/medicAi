@@ -12,13 +12,8 @@ import {
     getDocs,
     auth,
 } from '../config/firebaseConfig'
-export const useChatData = ({
-    textareaRef,
-    fileInputRef,
-}: {
-    textareaRef: React.RefObject<HTMLInputElement>
-    fileInputRef: React.RefObject<HTMLInputElement>
-}) => {
+import { TRef } from '../types/types'
+export const useChatData = ({ textareaRef, fileInputRef }: TRef) => {
     const [message, setMessage] = useState('')
     const [file, setFile] = useState<File | null>(null)
     const [loading, setLoading] = useState(false)
@@ -90,7 +85,10 @@ export const useChatData = ({
                 } else {
                     const chatDoc = snapShot.docs[0]
                     const existingData = chatDoc.data()
-                    const updatedDoc = [...existingData.respondDoc,...ai_response]
+                    const updatedDoc = [
+                        ...existingData.respondDoc,
+                        ...ai_response,
+                    ]
                     const docRef = doc(db, 'chat', chatDoc.id)
                     await updateDoc(docRef, { respondDoc: updatedDoc })
                 }

@@ -5,15 +5,12 @@ import { auth, db, doc, setDoc } from '../config/firebaseConfig'
 
 const PurchageDone = () => {
     const navigate = useNavigate()
-
     useEffect(() => {
         const fetchSessionData = async () => {
             const currentUser = auth.currentUser
-
             if (currentUser) {
                 const queryParams = new URLSearchParams(window.location.search)
                 const sessionId = queryParams.get('session_id')
-
                 if (sessionId) {
                     // Fetch the session details from your server
                     const response = await fetch(
