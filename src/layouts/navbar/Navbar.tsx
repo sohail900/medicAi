@@ -2,14 +2,18 @@ import { FC, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CircleUserRound, Menu } from 'lucide-react'
 import { auth } from '../../config/firebaseConfig'
-import logo from '/assets/logo.png'
+import current_logo from '/assets/logo.png'
 import Button from '../../components/Button'
 import ResponsiveNav from './ResponsiveNav'
+import { useLogoUrl } from '../../hooks/useLogoUrl'
 
 const Navbar: FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [user, setUser] = useState<boolean>(false)
     const navigate = useNavigate()
+    const { logoUrl } = useLogoUrl()
+
+    const logo = logoUrl || current_logo
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -19,7 +23,6 @@ const Navbar: FC = () => {
                 setUser(false)
             }
         })
-
         // Cleanup subscription on unmount
         return () => unsubscribe()
     }, [])

@@ -1,36 +1,43 @@
 import { useEffect, useState } from 'react'
-import { updateEmail, updateProfile } from 'firebase/auth'
-import { auth } from '../../../../config/firebaseConfig'
+import {
+    auth,
+    collection,
+    db,
+    doc,
+    updateDoc,
+} from '../../../../config/firebaseConfig'
 import { CircleUserRound, Loader } from 'lucide-react'
+import { getUser } from '../../../../service/chatService'
 const PersonalSett = () => {
     const [userData, setUserData] = useState({ email: '', name: '' })
     const [loading, setLoading] = useState(false)
+    const currentUser = auth.currentUser
+
+    const getCurrentUser = async () => {
+        const data = await getUser(currentUser?.uid as string)
+        setUserData({
+            name: data?.name,
+            email: data?.email,
+        })
+    }
+    useEffect(() => {
+        getCurrentUser()
+    }, [])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
         const value = e.target.value
         setUserData({ ...userData, [name]: value })
     }
-
-    useEffect(() => {
-        // Display the current user's name, email, and profile image
-        if (auth.currentUser) {
-            setUserData({
-                email: auth.currentUser.email || '',
-                name: auth.currentUser.displayName || '',
-            })
-        }
-    }, [])
     const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const currentUser = auth.currentUser
             if (currentUser) {
-                // Update email
-                await updateEmail(currentUser, userData.email)
-                await updateProfile(currentUser, {
-                    displayName: userData.name,
+                // Update Firestore with the new name
+                const userRef = doc(collection(db, 'users'), currentUser.uid)
+                await updateDoc(userRef, {
+                    fullname: userData.name,
                 })
             }
         } catch (error) {
@@ -65,8 +72,8 @@ const PersonalSett = () => {
                                 id='email'
                                 value={userData.email}
                                 type='email'
-                                placeholder='Email'
                                 onChange={handleChange}
+                                placeholder='Email'
                                 className='w-full px-3 py-2 border-none bg-white drop-shadow-drop mt-2 rounded-md focus:outline-none dark:text-black'
                             />
                         </div>

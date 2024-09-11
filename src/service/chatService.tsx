@@ -8,8 +8,9 @@ import {
     doc,
     auth,
     getDoc,
+    storage,
 } from '../config/firebaseConfig'
-
+import { listAll, ref, getDownloadURL, uploadBytes } from 'firebase/storage'
 /*
   # function used to get data from firebase
   # only login user can see their data
@@ -65,18 +66,80 @@ export const fetchUserSubscription = async () => {
     try {
         const userId = auth.currentUser?.uid
         if (userId) {
-            const userDoc = await getDoc(doc(db, 'users', userId))
+            const userDoc = await getDoc(doc(db, 'subscriptions', userId))
             if (userDoc.exists()) {
-                console.log(userDoc.data())
                 return userDoc.data()
             } else {
                 console.log('No such document!')
             }
         } else {
-            console.log('User not authenticated')
+            console.log('No authenticated user!')
         }
     } catch (error) {
         console.error('Error fetching user subscription:', error)
-        return null
+    }
+    return null
+}
+export const getUser = async (uid: string) => {
+    const userRef = doc(db, 'users', uid)
+    // Fetch the document with specific fields
+    const docSnap = await getDoc(userRef)
+
+    if (docSnap.exists()) {
+        // Extract only the name and email fields
+        const data = docSnap.data()
+        return { name: data.name, email: data.email }
+    }
+    console.log('no! user found')
+}
+
+export const getContent = async () => {
+    try {
+        const collectionRef = collection(db, 'content')
+        const heroRef = doc(collectionRef, 'hero')
+        const footerRef = doc(collectionRef, 'footer')
+        const colorRef = doc(collectionRef, 'color')
+
+        const footerContent = await getDoc(footerRef)
+        const heroContent = await getDoc(heroRef)
+
+        await getDoc(colorRef)
+        // create variable for primary color
+        // project needs (used dynamic color)
+        return {
+            footer: footerContent?.data()?.copyright,
+            hero: heroContent?.data()?.message,
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getLogo = async () => {
+    try {
+        const storageRef = ref(storage, 'logo')
+        const lists = await listAll(storageRef)
+        if (lists.items.length > 0) {
+            const logoUrl = await getDownloadURL(lists.items[0])
+            return logoUrl
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const uploadFile = async (file: File) => {
+    try {
+        // Create a reference to the location where we want to upload the file
+        const storageRef = ref(storage, `uploads/${file.name}`)
+
+        // Upload the file to Firebase Storage
+        const snapshot = await uploadBytes(storageRef, file)
+
+        // Get the download URL for the uploaded file
+        await getDownloadURL(snapshot.ref)
+    } catch (error) {
+        console.error('Error uploading file:', error)
+        throw error
     }
 }

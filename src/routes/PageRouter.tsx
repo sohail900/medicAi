@@ -14,7 +14,7 @@ const Signin = lazy(() => import('../pages/signin/Signin'))
 const Signup = lazy(() => import('../pages/signup/Signup'))
 const DiscountsPage = lazy(() => import('../pages/DiscountsPage'))
 const NotFound = lazy(() => import('../pages/NotFound'))
-const PurchageDone = lazy(() => import('../pages/PurchasePage'))
+const SuccessPage = lazy(() => import('../pages/SuccessPage'))
 const ForgotPass = lazy(() => import('../pages/ForgotPass'))
 const ResetPassword = lazy(() => import('../pages/ResetPassword'))
 const PageRouter = () => {
@@ -55,7 +55,7 @@ const PageRouter = () => {
             path: '/success',
             element: (
                 <ProtectedRoute>
-                    <PurchageDone />
+                    <SuccessPage />
                 </ProtectedRoute>
             ),
         },

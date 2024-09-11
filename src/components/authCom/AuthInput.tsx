@@ -32,11 +32,15 @@ const AuthInput: React.FC<IAuth> = ({
                 {type === 'password' && (
                     <div className='cursor-pointer absolute right-3 top-[3.05rem]'>
                         {showPassword === 'text' ? (
-                            <EyeOff
+                            <Eye
                                 onClick={() => setShowPassword('password')}
+                                size={20}
                             />
                         ) : (
-                            <Eye onClick={() => setShowPassword('text')} />
+                            <EyeOff
+                                onClick={() => setShowPassword('text')}
+                                size={20}
+                            />
                         )}
                     </div>
                 )}

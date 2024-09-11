@@ -13,6 +13,7 @@ import {
     auth,
 } from '../config/firebaseConfig'
 import { TRef } from '../types/types'
+import { uploadFile } from '../service/chatService'
 export const useChatData = ({ textareaRef, fileInputRef }: TRef) => {
     const [message, setMessage] = useState('')
     const [file, setFile] = useState<File | null>(null)
@@ -37,8 +38,11 @@ export const useChatData = ({ textareaRef, fileInputRef }: TRef) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
+        if (file) {
+            uploadFile(file)
+        }
         const user_id = auth.currentUser?.uid
-        // check is there any localStorage chat items exists
+        // check if there are any localStorage chat items
         let title = ''
         const getTitle = localStorage.getItem('chatTitle')
         if (getTitle) {
@@ -49,7 +53,6 @@ export const useChatData = ({ textareaRef, fileInputRef }: TRef) => {
                 setCurrentTitle(title)
             }
         }
-
         const formData = new FormData()
         if (file) {
             formData.append('file', file)
@@ -68,6 +71,7 @@ export const useChatData = ({ textareaRef, fileInputRef }: TRef) => {
             }
             if (respond.status == 200) {
                 handleNewResponse(respond.data)
+
                 const chatCollection = collection(db, 'chat')
                 const q = query(
                     chatCollection,

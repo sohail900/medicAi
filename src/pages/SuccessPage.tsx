@@ -3,8 +3,9 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
 import { auth, db, doc, setDoc } from '../config/firebaseConfig'
 
-const PurchageDone = () => {
+const SuccessPage = () => {
     const navigate = useNavigate()
+
     useEffect(() => {
         const fetchSessionData = async () => {
             const currentUser = auth.currentUser
@@ -19,25 +20,35 @@ const PurchageDone = () => {
                         }/checkout-session?sessionId=${sessionId}`
                     )
                     const session = await response.json()
-
                     // Store payment details in Firebase
-                    const userRef = doc(db, 'users', currentUser.uid)
-                    await setDoc(userRef, {
+                    const userSubscriptionRef = doc(
+                        db,
+                        'subscriptions',
+                        currentUser.uid // Store using the user ID
+                    )
+                    await setDoc(userSubscriptionRef, {
+                        uid: currentUser.uid, // Store user ID
                         purchasedPlan: session.productName,
                         amount: session.amount,
                         paymentDate: new Date(),
-                        stripeCustomerId: session.customer,
                         stripeSubscriptionId: session.subscription,
                     })
+                    // Now, update the user's document with the subscription ID
+                    const userDocRef = doc(db, 'users', currentUser.uid)
+                    await setDoc(
+                        userDocRef,
+                        {
+                            subscription: currentUser.uid,
+                        },
+                        { merge: true } // Ensure we're just updating the subscription field
+                    )
 
-                    // Redirect to dashboard or wherever necessary
-                    navigate('.//ai')
+                    navigate('../ai')
                 }
             } else {
                 navigate('./signin', { state: { showToaster: true } })
             }
         }
-
         fetchSessionData()
     }, [navigate])
     return (
@@ -58,4 +69,4 @@ const PurchageDone = () => {
     )
 }
 
-export default PurchageDone
+export default SuccessPage

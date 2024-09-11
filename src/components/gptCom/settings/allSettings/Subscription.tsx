@@ -16,9 +16,9 @@ const Subscription = () => {
                     <Elements stripe={stripePromise}>
                         {pricingData.map((elem) => {
                             return (
-                                <>
-                                    <PricingCard {...elem} width={380} />
-                                </>
+                                <span key={elem.id}>
+                                    <PricingCard {...elem} />
+                                </span>
                             )
                         })}
                     </Elements>

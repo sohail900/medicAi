@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../config/firebaseConfig'
-import logo from '/assets/logo.png'
-import AuthInput from './AuthInput'
 import { Loader } from 'lucide-react'
+import { Timestamp } from 'firebase/firestore'
+import { auth, setDoc, doc, db } from '../../config/firebaseConfig'
+import { useLogoUrl } from '../../hooks/useLogoUrl'
+import current_logo from '/assets/logo.png'
+import AuthInput from './AuthInput'
 // import GoogleAuth from './GoogleAuth'
 const SignupCom: React.FC = () => {
     const [inputData, setInputData] = useState({
@@ -15,6 +17,8 @@ const SignupCom: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [showError, setShowError] = useState<string | null>(null)
     const [passwordTouched, setPasswordTouched] = useState(false)
+    const { logoUrl } = useLogoUrl()
+    const logo = logoUrl || current_logo
     //navigate to next page
     const navigate = useNavigate()
     //handle input change
@@ -36,10 +40,22 @@ const SignupCom: React.FC = () => {
         setLoading(true)
         try {
             // create user with email and password...
-            await createUserWithEmailAndPassword(auth, email, password)
+            const currentUser = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            )
+            const user = currentUser.user
+            // store user data in firebase
+            await setDoc(doc(db, 'users', user.uid), {
+                fullname: '',
+                email: user.email,
+                uid: user.uid,
+                subscription: 'basic',
+                createdAt: Timestamp.now(),
+            })
             navigate('../ai', { state: { showToaster: true } })
         } catch (error) {
-            // Check if error is of type FirebaseError
             if (error instanceof Error) {
                 // Handle different types of errors
                 if (error.message.includes('auth/email-already-in-use')) {

@@ -30,7 +30,7 @@ const barItems = [
         link: '/sb',
     },
 ]
-const SettingBar: React.FC<{
+const SettingsSidebar: React.FC<{
     setSettingBar: Dispatch<SetStateAction<boolean>>
 }> = ({ setSettingBar }) => {
     ///setSettingBar
@@ -50,20 +50,18 @@ const SettingBar: React.FC<{
                     {barItems?.map((elem, index) => {
                         const { Icon, title, link } = elem
                         return (
-                            <>
-                                <NavLink
-                                    to={`.${link}`}
-                                    end
-                                    className='flex items-center px-8 w-full gap-2 bg-[#fafafa] py-3 rounded-lg font-medium transition-all ease-out dark:bg-[rgba(225,225,225,0.1)] hover:bg-primary-color hover:text-white '
-                                    key={index}
-                                >
-                                    <Icon
-                                        className='mr-4 hidden sm:block'
-                                        size={20}
-                                    />
-                                    {title}
-                                </NavLink>
-                            </>
+                            <NavLink
+                                to={`.${link}`}
+                                end
+                                className='flex items-center px-8 w-full gap-2 bg-[#fafafa] py-3 rounded-lg font-medium transition-all ease-out dark:bg-[rgba(225,225,225,0.1)] hover:bg-primary-color hover:text-white '
+                                key={index}
+                            >
+                                <Icon
+                                    className='mr-4 hidden sm:block'
+                                    size={20}
+                                />
+                                {title}
+                            </NavLink>
                         )
                     })}
                 </div>
@@ -72,4 +70,4 @@ const SettingBar: React.FC<{
     )
 }
 
-export default SettingBar
+export default SettingsSidebar

@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MoveRight } from 'lucide-react'
 import bgImage from '/assets/bg.png'
+import { getContent } from '../../../service/chatService'
 import Button from '../../Button'
+
 const Hero: React.FC = () => {
     const navigate = useNavigate()
+    const [heroContent, setHeroContent] = useState<string>('')
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            const hero = await getContent()
+            if (hero) {
+                setHeroContent(hero.hero)
+            }
+        }
+        fetchContent()
+    }, [])
     return (
         <>
             <section className='w-full h-dvh relative'>
@@ -15,7 +28,8 @@ const Hero: React.FC = () => {
                 />
                 <div className='flex flex-col items-center justify-center h-full  lg:h-[80%] text-center '>
                     <h1 className='w-[90%] md:w-[65%] lg:w-[55%] mb-6'>
-                        AI-Powered Precision for Medical Documentation
+                        {heroContent ||
+                            'AI-Powered Precision for Medical Documentation'}
                     </h1>
                     <p className='w-[90%] md:w-[65%] lg:w-[55%] mb-8 text-secondary-color text-[1.25rem]  leading-relaxed font-medium'>
                         Transform patient care with our advanced AI technology.

@@ -1,25 +1,24 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../config/firebaseConfig'
-import logo from '/assets/logo.png'
-import AuthInput from './AuthInput'
 import { Loader } from 'lucide-react'
+import { auth } from '../../config/firebaseConfig'
+import current_logo from '/assets/logo.png'
+import AuthInput from './AuthInput'
+import { useLogoUrl } from '../../hooks/useLogoUrl'
 // import GoogleAuth from './GoogleAuth'
 const SigninCom: React.FC = () => {
     const [inputData, setInputData] = useState({ email: '', password: '' })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const { logoUrl } = useLogoUrl()
+    const logo = logoUrl || current_logo
     ///navigate to next page
     const navigate = useNavigate()
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setInputData((prevState: { email: string; password: string }) => ({
-            ...prevState,
-            [name]: value,
-        }))
+        setInputData((prevState) => ({ ...prevState, [name]: value }))
     }
-    // on sumbit handler
     ///  handle onSumbit form
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault()

@@ -1,11 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { db } from '../../config/firebaseConfig'
 import { addDoc, collection } from 'firebase/firestore'
 import Toaster from '../../components/Toaster'
 import { Loader } from 'lucide-react'
+import current_logo from '/assets/logo.png'
+import { getContent } from '../../service/chatService'
+import { useLogoUrl } from '../../hooks/useLogoUrl'
 const Footer: React.FC = () => {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
+    const [footer, setFooter] = useState('')
+    const { logoUrl } = useLogoUrl()
+
+    const logo = logoUrl || current_logo
+
     // handle submit
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -20,19 +28,25 @@ const Footer: React.FC = () => {
             console.log(error)
         }
     }
+    // fetched footer content
+    useEffect(() => {
+        const footerContent = async () => {
+            const content = await getContent()
+            if (content) {
+                setFooter(content.footer)
+            }
+        }
+        footerContent()
+    }, [])
+
     return (
         <>
             <footer className='px-16 mt-20 mb-8 flex justify-between items-center flex-col lg:flex-row'>
                 <div className='mb-4'>
-                    <img src='/assets/logo.png' alt='footer_logo' width={160} />
-                    <div className='flex items-center font-medium gap-2 flex-wrap'>
-                        <p className='text-[0.9rem] text-[##6F6C90] relative before:content-[""]before:absolute before:w-[1px] before:h-[100%] before:bg-[#6F6C90] before:right-[-10%] before:top-1/2'>
-                            Copyright © XYZ -
-                        </p>
-                        <p className='text-[0.9rem] text-[##6F6C90]'>
-                            All Rights Reserved
-                        </p>
-                    </div>
+                    <img src={logo} alt='footer_logo' width={160} />
+                    <p className='font-medium mt-3 text-tertiary-color text-[0.95rem]'>
+                        {footer || ' All Rights Reserved'}
+                    </p>
                 </div>
                 <div>
                     <h3 className='font-bold text-[1rem] sm:text-lg mb-2'>

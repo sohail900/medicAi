@@ -59,21 +59,17 @@ const General: React.FC = () => {
                     >
                         {theme.map((elem) => {
                             return (
-                                <>
-                                    <option
-                                        key={elem}
-                                        value={elem}
-                                        onClick={() =>
-                                            setThemeColor((pre) =>
-                                                pre == 'White'
-                                                    ? 'Dark'
-                                                    : 'White'
-                                            )
-                                        }
-                                    >
-                                        {elem}
-                                    </option>
-                                </>
+                                <option
+                                    key={elem}
+                                    value={elem}
+                                    onClick={() =>
+                                        setThemeColor((pre) =>
+                                            pre == 'White' ? 'Dark' : 'White'
+                                        )
+                                    }
+                                >
+                                    {elem}
+                                </option>
                             )
                         })}
                     </select>

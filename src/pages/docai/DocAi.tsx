@@ -13,7 +13,6 @@ const DocAi: React.FC = () => {
             setToaster(false)
         }
     }, [location.state])
-
     return (
         <>
             <div className='flex w-full h-full'>
