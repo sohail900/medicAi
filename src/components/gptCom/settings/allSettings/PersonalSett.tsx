@@ -11,12 +11,13 @@ import { getUser } from '../../../../service/chatService'
 const PersonalSett = () => {
     const [userData, setUserData] = useState({ email: '', name: '' })
     const [loading, setLoading] = useState(false)
+
     const currentUser = auth.currentUser
 
     const getCurrentUser = async () => {
         const data = await getUser(currentUser?.uid as string)
         setUserData({
-            name: data?.name,
+            name: data?.fullname,
             email: data?.email,
         })
     }

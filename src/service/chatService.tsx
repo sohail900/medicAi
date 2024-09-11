@@ -88,7 +88,7 @@ export const getUser = async (uid: string) => {
     if (docSnap.exists()) {
         // Extract only the name and email fields
         const data = docSnap.data()
-        return { name: data.name, email: data.email }
+        return { fullname: data.fullname, email: data.email }
     }
     console.log('no! user found')
 }
